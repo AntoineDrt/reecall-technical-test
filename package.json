@@ -3,7 +3,7 @@
     "dev": "nodemon",
     "start": "ts-node src/main.ts",
     "build": "tsc",
-    "serve": "node dist/main.js"
+    "serve": "node dist/src/main.js"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
