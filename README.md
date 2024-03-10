@@ -1,14 +1,5 @@
 # Reecall Technical Test
 
-## System Architecture
-
-I chose to write this application using **Clean Architecture**.\
-Even though it is overkill for a project this size, it creates a system that is highly:
-
-- maintanable
-- scalable
-- testable
-
 ## Application overview
 
 This social application allows users to share posts anonymously.\
@@ -112,3 +103,43 @@ Responses:
 
 - 201 - Resource created, the API will return the created resource
 - 400 - User error, the API will return a message explaining the error
+
+## Design decisions
+
+### System Architecture
+
+I chose to write this application using [**Clean Architecture**](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html).\
+Even though it is overkill for a project this size, it creates a system that is highly:
+
+- maintanable
+- scalable
+- testable
+
+My choice was motivated by the great use clean architecture makes of those two principles :
+
+**Dependency inversion principle**; this makes sure the business logic is not polluted by other concerns than business logic.\
+In other words, the core logic of my application doesn't know about anything related to exterior dependencies such as database, framework, etc...\
+This allows for easy testing, but also refactors and changes of libraries, frameworks, or other tools in the future.
+
+**Single responsibility principle**; each layer of application is clearly separated and only take care of their scope of responsibility.\
+And for example, I profited from the event system to respect this principle as follow : once a use case is done, it will emit an event that can trigger another mechanism or another use case.
+
+### Event driven application
+
+As stated before, I used the event system as a way to make sure the single responsibility principle is respected. But it also allows for the application to answer to the client as soon as possible and keep processing in the background.
+
+For example, when a client subscribes to the newsletter, the application does two things :
+
+- create and store a new `Subscriber`
+- send a welcome email to the new subscriber
+
+The user shouldn't have to wait for all the above to be done to receive an answer from the API.\
+That's where the events comes in handy; once the `Subscribe` use case has done its thing (i.e.: create and store the new `Subscriber`), it emits the `newSubscription` event and an answer is returned to the client.\
+During this time, the event is received by the notification system that distributes it to the use case responsible for sending a welcome email.
+
+### Flow of data
+
+The following schema illustrates the flow of data in the application.\
+It uses the context of the example detailed above.
+
+![](./assets/flow-of-data.png)
