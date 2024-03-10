@@ -43,3 +43,72 @@ _🛜 Triggered by : [User publishes post](#user-publishes-post) via notificatio
 The system sends a mail welcoming a subscriber.
 
 _🛜 Triggered by : [User subscribes to the newsletter](#user-subscribes-to-the-newsletter) via notification system listening on `newSubscribtion`_
+
+## Running the app
+
+### 🐳 The docker way
+
+([Docker](https://www.docker.com/get-started/) & [docker compose](https://docs.docker.com/compose/install/) required)
+
+```bash
+docker compose up
+```
+
+### ✋ The manual way
+
+1. Install dependencies
+
+```bash
+npm ci
+```
+
+2. Run the app
+
+```bash
+npm run start
+```
+
+## Using the app
+
+The app exposes a RESTful API where :
+
+- `POST` method is used to create
+- `GET` method is used to read
+- endpoints refer to resources
+- data sent or received will always be JSON
+
+### API Reference
+
+#### Add a subscriber to the newsletter
+
+Method: `POST`\
+Endpoint: `/subscribers`\
+Sample body:
+
+```json
+{
+  "email": "bob@gmail.com"
+}
+```
+
+Responses:
+
+- 204 - Request successful, no content returned by the API
+- 400 - User error, the API will return a message explaining the error
+
+#### Publish an anonymous post
+
+Method: `POST`\
+Endpoint: `/posts`\
+Sample body:
+
+```json
+{
+  "content": "Lorem ipsum dolor sit amet"
+}
+```
+
+Responses:
+
+- 201 - Resource created, the API will return the created resource
+- 400 - User error, the API will return a message explaining the error
