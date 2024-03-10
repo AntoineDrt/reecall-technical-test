@@ -1,8 +1,8 @@
 import { SubscriberEventsRepository } from "./infrastructure/events/subscriberEvents.repository"
 import { SubscriberRepository } from "./infrastructure/storage/subscriber.repository"
 import { PostEventsRepository } from "./infrastructure/events/postEvents.repository"
+import { Welcomesubscriber } from "./application/useCases/welcomeSubscriber.usecase"
 import { setupNotificationSystem } from "./application/systems/notificationSystem"
-import { SendWelcomeEmail } from "./application/useCases/sendWelcomeEmail.usecase"
 import { EmailRepository } from "./infrastructure/communication/email.repository"
 import { PublishPostController } from "./presentation/controllers/publishPost"
 import { BroadcastPost } from "./application/useCases/broadcastPost.usecase"
@@ -28,10 +28,10 @@ const postEvents = new PostEventsRepository()
 const broadcastPostUsecase = new BroadcastPost(subscriberRepository, emailRepository)
 const subscribeUsecase = new Subscribe(subscriberEvents, subscriberRepository)
 const publishPostUsecase = new PublishPost(postEvents, postRepository)
-const sendWelcomeEmailUsecase = new SendWelcomeEmail(emailRepository)
+const welcomeSubscriberUsecase = new Welcomesubscriber(emailRepository)
 
 setupNotificationSystem(
-  sendWelcomeEmailUsecase,
+  welcomeSubscriberUsecase,
   broadcastPostUsecase,
   subscriberEvents,
   postEvents

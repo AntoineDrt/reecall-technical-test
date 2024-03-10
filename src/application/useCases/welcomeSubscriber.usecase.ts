@@ -2,7 +2,7 @@ import { type IEmailRepository } from "../interfaces/email.repository";
 import { type Subscriber } from "../../domain/subscriber";
 import { type UseCase } from "../common/useCase";
 
-export class SendWelcomeEmail implements UseCase<Subscriber["email"], void> {
+export class Welcomesubscriber implements UseCase<Subscriber["email"], void> {
   constructor(
     private readonly emailRepository: IEmailRepository,
   ) { }

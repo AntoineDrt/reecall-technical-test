@@ -3,7 +3,7 @@ import { type BroadcastPost } from "../../../src/application/useCases/broadcastP
 import { type Mock, mock } from "ts-jest-mocker"
 import { Post } from "../../../src/domain/post"
 import { Subscriber } from "../../../src/domain/subscriber"
-import { type SendWelcomeEmail } from "../../../src/application/useCases/sendWelcomeEmail.usecase"
+import { type Welcomesubscriber } from "../../../src/application/useCases/welcomeSubscriber.usecase"
 import { type IEventsRepository } from "../../../src/application/interfaces/events.repository"
 import { type SubscriberEvents } from "../../../src/application/useCases/subscribe.usecase"
 import { type PostEvents } from "../../../src/application/useCases/publishPost.usecase"
@@ -15,36 +15,36 @@ describe("Notification system", () => {
   let subscriberEvents: IEventsRepository<SubscriberEvents>
   let postEvents: IEventsRepository<PostEvents>
   let broadcastPostUseCase: Mock<BroadcastPost>
-  let sendWelcomeEmailUsecase: Mock<SendWelcomeEmail>
+  let welcomeSubscriberUsecase: Mock<Welcomesubscriber>
 
   const resetMocks = (): void => {
     subscriberEvents = new SubscriberEventsRepository()
     postEvents = new PostEventsRepository()
     broadcastPostUseCase = mock<BroadcastPost>()
-    sendWelcomeEmailUsecase = mock<SendWelcomeEmail>()
+    welcomeSubscriberUsecase = mock<Welcomesubscriber>()
 
     setupNotificationSystem(
-      sendWelcomeEmailUsecase,
+      welcomeSubscriberUsecase,
       broadcastPostUseCase,
       subscriberEvents,
       postEvents)
 
     jest.spyOn(broadcastPostUseCase, "execute")
-    jest.spyOn(sendWelcomeEmailUsecase, "execute")
+    jest.spyOn(welcomeSubscriberUsecase, "execute")
   }
 
   beforeEach(() => {
     resetMocks()
   })
 
-  it('should execute SendWelcomeEmail use case when "newSubscription" event is emitted', async () => {
-    sendWelcomeEmailUsecase.execute.mockReturnValue(new Promise(resolve => { resolve(); }))
+  it('should execute Welcomesubscriber use case when "newSubscription" event is emitted', async () => {
+    welcomeSubscriberUsecase.execute.mockReturnValue(new Promise(resolve => { resolve(); }))
 
     const subscriberEmail = "test@gmail.com"
 
     subscriberEvents.emit("newSubscription", new Subscriber(subscriberEmail))
 
-    expect(sendWelcomeEmailUsecase.execute).toHaveBeenCalledWith(subscriberEmail)
+    expect(welcomeSubscriberUsecase.execute).toHaveBeenCalledWith(subscriberEmail)
   })
 
   it('should execute BroadcastPost use case when "postPublished" event is emitted', async () => {

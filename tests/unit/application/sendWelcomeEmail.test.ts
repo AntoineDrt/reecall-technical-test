@@ -1,14 +1,14 @@
 import { type IEmailRepository } from "../../../src/application/interfaces/email.repository"
 import { type Mock, mock } from "ts-jest-mocker"
-import { SendWelcomeEmail } from "../../../src/application/useCases/sendWelcomeEmail.usecase"
+import { Welcomesubscriber } from "../../../src/application/useCases/welcomeSubscriber.usecase"
 
 describe("Send welcome email use case", () => {
   let emailRepository: Mock<IEmailRepository>
-  let sendWelcomeEmailUseCase: SendWelcomeEmail
+  let welcomeSubscriberUsecase: Welcomesubscriber
 
   const resetMocks = (): void => {
     emailRepository = mock<IEmailRepository>()
-    sendWelcomeEmailUseCase = new SendWelcomeEmail(emailRepository)
+    welcomeSubscriberUsecase = new Welcomesubscriber(emailRepository)
 
     jest.spyOn(emailRepository, "send")
   }
@@ -25,7 +25,7 @@ describe("Send welcome email use case", () => {
     `
     emailRepository.send.mockReturnValue(new Promise(resolve => { resolve()}))
 
-    await sendWelcomeEmailUseCase.execute(newSubscriberEmail)
+    await welcomeSubscriberUsecase.execute(newSubscriberEmail)
 
     expect(emailRepository.send).toHaveBeenCalledWith(expectedWelcomeText, newSubscriberEmail)
   })
